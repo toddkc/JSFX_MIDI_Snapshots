@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<midi>
+  <routings plugin_type="neural_dsp_petrucci" plugin_name="Archetype Petrucci"
+            plugin_version="1.0.0">
+    <routing parameter="doublerActive" type="note_toggle" channel="0" enabled="1"
+             note="44"/>
+    <routing parameter="volumeGain" type="cc_value" channel="0" enabled="1"
+             cc="7"/>
+    <routing parameter="wahPosition" type="cc_value" channel="0" enabled="1"
+             cc="27"/>
+    <routing parameter="ampType" type="note_gate_value" channel="0" enabled="1"
+             value="1.0" note="12"/>
+    <routing parameter="ampType" type="note_gate_value" channel="0" enabled="1"
+             value="0.6666666865348816" note="11"/>
+    <routing parameter="ampType" type="note_gate_value" channel="0" enabled="1"
+             value="0.3333333432674408" note="10"/>
+    <routing parameter="ampType" type="note_gate_value" channel="0" enabled="1"
+             value="0.0" note="9"/>
+    <routing parameter="wahActive" type="note_gate" channel="0" enabled="1"
+             note="0"/>
+    <routing parameter="compActive" type="note_gate" channel="0" enabled="1"
+             note="1"/>
+    <routing parameter="driveActive" type="note_gate" channel="0" enabled="1"
+             note="2"/>
+    <routing parameter="phaserActive" type="note_gate" channel="0" enabled="1"
+             note="3"/>
+    <routing parameter="chorusActive" type="note_gate" channel="0" enabled="1"
+             note="4"/>
+    <routing parameter="flangerActive" type="note_gate" channel="0" enabled="1"
+             note="5"/>
+    <routing parameter="chorus2Active" type="note_gate" channel="0" enabled="1"
+             note="6"/>
+    <routing parameter="delayActive" type="note_gate" channel="0" enabled="1"
+             note="7"/>
+    <routing parameter="reverbActive" type="note_gate" channel="0" enabled="1"
+             note="8"/>
+    <routing parameter="wahActive" type="note_toggle" channel="0" enabled="1"
+             note="45"/>
+  </routings>
+</midi>

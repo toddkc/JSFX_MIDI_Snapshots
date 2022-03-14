@@ -1,0 +1,811 @@
+// midisnaps: multiple midi notes/cc output from one note input
+// author: toddkc
+// Copyright 2022, toddkc
+desc:Midi Snapshots [toddkc]
+
+import ui-lib.jsfx-inc
+
+in_pin:none
+out_pin:none
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+@init
+freemem = ui_setup();
+note =  $x90;
+cc =    $xB0;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+@gfx
+ui_start();
+
+// header start
+ui_split_top(25);
+  ui_text("Listening for MIDI CC #69 Values 0-7 on Channel 1.  Output on Channel 1.");
+  ui_pop();
+ui_split_top(25);
+  ui_text("Triple-click the empty whitespace at the top of a snapshot section to add a label.");
+  ui_pop();
+// header end
+
+// snapshots 1-4 start
+ui_split_top(440);
+  ui_split_left(200);
+// snapshot 1 start
+control_group("Snapshot 1 - CC 69 0");
+  ui_split_top(40);
+    control_hidden_text(#snapshot_1_note);
+    ui_pop();
+  ui_split_top(40);
+    ui_split_left(80);
+    ui_text("Compressor");
+    ui_split_next();
+    snapshot_1_compressor = control_switch(snapshot_1_compressor);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Overdrive");
+    ui_split_next();
+    snapshot_1_overdrive = control_switch(snapshot_1_overdrive);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Phaser");
+    ui_split_next();
+    snapshot_1_phaser = control_switch(snapshot_1_phaser);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Chorus Pre");
+    ui_split_next();
+    snapshot_1_chorus_pre = control_switch(snapshot_1_chorus_pre);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Flanger");
+    ui_split_next();
+    snapshot_1_flanger = control_switch(snapshot_1_flanger);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Chorus Post");
+    ui_split_next();
+    snapshot_1_chorus_post = control_switch(snapshot_1_chorus_post);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Delay");
+    ui_split_next();
+    snapshot_1_delay = control_switch(snapshot_1_delay);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Reverb");
+    ui_split_next();
+    snapshot_1_reverb = control_switch(snapshot_1_reverb);
+    ui_pop();
+  ui_split_next();
+    sprintf(#text, snapshot_1_amp == 1 ? "Piezo" : snapshot_1_amp == 2 ? "Clean" : snapshot_1_amp == 3 ? "Rhythm" : snapshot_1_amp == 4 ? "Lead", snapshot_1_amp);
+    next_value = min(4, snapshot_1_amp + 1);
+    prev_value = max(1, snapshot_1_amp - 1);
+    snapshot_1_amp = control_selector(snapshot_1_amp, #text, next_value, prev_value);
+ui_pop();
+// snapshot 1 end
+  ui_split_next();
+// snapshot 2 start
+control_group("Snapshot 2 - CC 69 1");
+  ui_split_top(40);
+    control_hidden_text(#snapshot_2_note);
+    ui_pop();
+  ui_split_top(40);
+    ui_split_left(80);
+    ui_text("Compressor");
+    ui_split_next();
+    snapshot_2_compressor = control_switch(snapshot_2_compressor);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Overdrive");
+    ui_split_next();
+    snapshot_2_overdrive = control_switch(snapshot_2_overdrive);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Phaser");
+    ui_split_next();
+    snapshot_2_phaser = control_switch(snapshot_2_phaser);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Chorus Pre");
+    ui_split_next();
+    snapshot_2_chorus_pre = control_switch(snapshot_2_chorus_pre);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Flanger");
+    ui_split_next();
+    snapshot_2_flanger = control_switch(snapshot_2_flanger);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Chorus Post");
+    ui_split_next();
+    snapshot_2_chorus_post = control_switch(snapshot_2_chorus_post);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Delay");
+    ui_split_next();
+    snapshot_2_delay = control_switch(snapshot_2_delay);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Reverb");
+    ui_split_next();
+    snapshot_2_reverb = control_switch(snapshot_2_reverb);
+    ui_pop();
+  ui_split_next();
+    sprintf(#text, snapshot_2_amp == 1 ? "Piezo" : snapshot_2_amp == 2 ? "Clean" : snapshot_2_amp == 3 ? "Rhythm" : snapshot_2_amp == 4 ? "Lead", snapshot_2_amp);
+    next_value = min(4, snapshot_2_amp + 1);
+    prev_value = max(1, snapshot_2_amp - 1);
+    snapshot_2_amp = control_selector(snapshot_2_amp, #text, next_value, prev_value);
+ui_pop();
+// snapshot 2 end
+  ui_split_next();
+// snapshot 3 start
+control_group("Snapshot 3 - CC 69 2");
+  ui_split_top(40);
+    control_hidden_text(#snapshot_3_note);
+    ui_pop();
+  ui_split_top(40);
+    ui_split_left(80);
+    ui_text("Compressor");
+    ui_split_next();
+    snapshot_3_compressor = control_switch(snapshot_3_compressor);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Overdrive");
+    ui_split_next();
+    snapshot_3_overdrive = control_switch(snapshot_3_overdrive);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Phaser");
+    ui_split_next();
+    snapshot_3_phaser = control_switch(snapshot_3_phaser);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Chorus Pre");
+    ui_split_next();
+    snapshot_3_chorus_pre = control_switch(snapshot_3_chorus_pre);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Flanger");
+    ui_split_next();
+    snapshot_3_flanger = control_switch(snapshot_3_flanger);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Chorus Post");
+    ui_split_next();
+    snapshot_3_chorus_post = control_switch(snapshot_3_chorus_post);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Delay");
+    ui_split_next();
+    snapshot_3_delay = control_switch(snapshot_3_delay);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Reverb");
+    ui_split_next();
+    snapshot_3_reverb = control_switch(snapshot_3_reverb);
+    ui_pop();
+  ui_split_next();
+    sprintf(#text, snapshot_3_amp == 1 ? "Piezo" : snapshot_3_amp == 2 ? "Clean" : snapshot_3_amp == 3 ? "Rhythm" : snapshot_3_amp == 4 ? "Lead", snapshot_3_amp);
+    next_value = min(4, snapshot_3_amp + 1);
+    prev_value = max(1, snapshot_3_amp - 1);
+    snapshot_3_amp = control_selector(snapshot_3_amp, #text, next_value, prev_value);
+ui_pop();
+// snapshot 3 end
+  ui_split_next();
+// snapshot 4 start
+control_group("Snapshot 4 - CC 69 3");
+  ui_split_top(40);
+    control_hidden_text(#snapshot_4_note);
+    ui_pop();
+  ui_split_top(40);
+    ui_split_left(80);
+    ui_text("Compressor");
+    ui_split_next();
+    snapshot_4_compressor = control_switch(snapshot_4_compressor);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Overdrive");
+    ui_split_next();
+    snapshot_4_overdrive = control_switch(snapshot_4_overdrive);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Phaser");
+    ui_split_next();
+    snapshot_4_phaser = control_switch(snapshot_4_phaser);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Chorus Pre");
+    ui_split_next();
+    snapshot_4_chorus_pre = control_switch(snapshot_4_chorus_pre);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Flanger");
+    ui_split_next();
+    snapshot_4_flanger = control_switch(snapshot_4_flanger);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Chorus Post");
+    ui_split_next();
+    snapshot_4_chorus_post = control_switch(snapshot_4_chorus_post);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Delay");
+    ui_split_next();
+    snapshot_4_delay = control_switch(snapshot_4_delay);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Reverb");
+    ui_split_next();
+    snapshot_4_reverb = control_switch(snapshot_4_reverb);
+    ui_pop();
+  ui_split_next();
+    sprintf(#text, snapshot_4_amp == 1 ? "Piezo" : snapshot_4_amp == 2 ? "Clean" : snapshot_4_amp == 3 ? "Rhythm" : snapshot_4_amp == 4 ? "Lead", snapshot_4_amp);
+    next_value = min(4, snapshot_4_amp + 1);
+    prev_value = max(1, snapshot_4_amp - 1);
+    snapshot_4_amp = control_selector(snapshot_4_amp, #text, next_value, prev_value);
+ui_pop();
+// snapshot 4 end
+      ui_pop();
+// snapshots 1-4 end
+// snapshots 5-8 start
+ui_split_next();
+  ui_split_left(200);
+// snapshot 5 start
+control_group("Snapshot 5 - CC 69 4");
+  ui_split_top(40);
+    control_hidden_text(#snapshot_5_note);
+    ui_pop();
+  ui_split_top(40);
+    ui_split_left(80);
+    ui_text("Compressor");
+    ui_split_next();
+    snapshot_5_compressor = control_switch(snapshot_5_compressor);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Overdrive");
+    ui_split_next();
+    snapshot_5_overdrive = control_switch(snapshot_5_overdrive);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Phaser");
+    ui_split_next();
+    snapshot_5_phaser = control_switch(snapshot_5_phaser);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Chorus Pre");
+    ui_split_next();
+    snapshot_5_chorus_pre = control_switch(snapshot_5_chorus_pre);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Flanger");
+    ui_split_next();
+    snapshot_5_flanger = control_switch(snapshot_5_flanger);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Chorus Post");
+    ui_split_next();
+    snapshot_5_chorus_post = control_switch(snapshot_5_chorus_post);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Delay");
+    ui_split_next();
+    snapshot_5_delay = control_switch(snapshot_5_delay);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Reverb");
+    ui_split_next();
+    snapshot_5_reverb = control_switch(snapshot_5_reverb);
+    ui_pop();
+  ui_split_next();
+    sprintf(#text, snapshot_5_amp == 1 ? "Piezo" : snapshot_5_amp == 2 ? "Clean" : snapshot_5_amp == 3 ? "Rhythm" : snapshot_5_amp == 4 ? "Lead", snapshot_5_amp);
+    next_value = min(4, snapshot_5_amp + 1);
+    prev_value = max(1, snapshot_5_amp - 1);
+    snapshot_5_amp = control_selector(snapshot_5_amp, #text, next_value, prev_value);
+ui_pop();
+// snapshot 5 end
+    ui_split_next();
+// snapshot 6 start
+control_group("Snapshot 6 - CC 69 5");
+  ui_split_top(40);
+    control_hidden_text(#snapshot_6_note);
+    ui_pop();
+  ui_split_top(40);
+    ui_split_left(80);
+    ui_text("Compressor");
+    ui_split_next();
+    snapshot_6_compressor = control_switch(snapshot_6_compressor);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Overdrive");
+    ui_split_next();
+    snapshot_6_overdrive = control_switch(snapshot_6_overdrive);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Phaser");
+    ui_split_next();
+    snapshot_6_phaser = control_switch(snapshot_6_phaser);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Chorus Pre");
+    ui_split_next();
+    snapshot_6_chorus_pre = control_switch(snapshot_6_chorus_pre);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Flanger");
+    ui_split_next();
+    snapshot_6_flanger = control_switch(snapshot_6_flanger);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Chorus Post");
+    ui_split_next();
+    snapshot_6_chorus_post = control_switch(snapshot_6_chorus_post);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Delay");
+    ui_split_next();
+    snapshot_6_delay = control_switch(snapshot_6_delay);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Reverb");
+    ui_split_next();
+    snapshot_6_reverb = control_switch(snapshot_6_reverb);
+    ui_pop();
+  ui_split_next();
+    sprintf(#text, snapshot_6_amp == 1 ? "Piezo" : snapshot_6_amp == 2 ? "Clean" : snapshot_6_amp == 3 ? "Rhythm" : snapshot_6_amp == 4 ? "Lead", snapshot_6_amp);
+    next_value = min(4, snapshot_6_amp + 1);
+    prev_value = max(1, snapshot_6_amp - 1);
+    snapshot_6_amp = control_selector(snapshot_6_amp, #text, next_value, prev_value);
+ui_pop();
+// snapshot 6 end
+    ui_split_next();
+// snapshot 7 start
+control_group("Snapshot 7 - CC 69 6");
+  ui_split_top(40);
+    control_hidden_text(#snapshot_7_note);
+    ui_pop();
+  ui_split_top(40);
+    ui_split_left(80);
+    ui_text("Compressor");
+    ui_split_next();
+    snapshot_7_compressor = control_switch(snapshot_7_compressor);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Overdrive");
+    ui_split_next();
+    snapshot_7_overdrive = control_switch(snapshot_7_overdrive);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Phaser");
+    ui_split_next();
+    snapshot_7_phaser = control_switch(snapshot_7_phaser);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Chorus Pre");
+    ui_split_next();
+    snapshot_7_chorus_pre = control_switch(snapshot_7_chorus_pre);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Flanger");
+    ui_split_next();
+    snapshot_7_flanger = control_switch(snapshot_7_flanger);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Chorus Post");
+    ui_split_next();
+    snapshot_7_chorus_post = control_switch(snapshot_7_chorus_post);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Delay");
+    ui_split_next();
+    snapshot_7_delay = control_switch(snapshot_7_delay);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Reverb");
+    ui_split_next();
+    snapshot_7_reverb = control_switch(snapshot_7_reverb);
+    ui_pop();
+  ui_split_next();
+    sprintf(#text, snapshot_7_amp == 1 ? "Piezo" : snapshot_7_amp == 2 ? "Clean" : snapshot_7_amp == 3 ? "Rhythm" : snapshot_7_amp == 4 ? "Lead", snapshot_7_amp);
+    next_value = min(4, snapshot_7_amp + 1);
+    prev_value = max(1, snapshot_7_amp - 1);
+    snapshot_7_amp = control_selector(snapshot_7_amp, #text, next_value, prev_value);
+ui_pop();
+// snapshot 7 end
+    ui_split_next();
+// snapshot 8 start
+control_group("Snapshot 8 - CC 69 7");
+  ui_split_top(40);
+    control_hidden_text(#snapshot_8_note);
+    ui_pop();
+  ui_split_top(40);
+    ui_split_left(80);
+    ui_text("Compressor");
+    ui_split_next();
+    snapshot_8_compressor = control_switch(snapshot_8_compressor);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Overdrive");
+    ui_split_next();
+    snapshot_8_overdrive = control_switch(snapshot_8_overdrive);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Phaser");
+    ui_split_next();
+    snapshot_8_phaser = control_switch(snapshot_8_phaser);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Chorus Pre");
+    ui_split_next();
+    snapshot_8_chorus_pre = control_switch(snapshot_8_chorus_pre);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Flanger");
+    ui_split_next();
+    snapshot_8_flanger = control_switch(snapshot_8_flanger);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Chorus Post");
+    ui_split_next();
+    snapshot_8_chorus_post = control_switch(snapshot_8_chorus_post);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Delay");
+    ui_split_next();
+    snapshot_8_delay = control_switch(snapshot_8_delay);
+    ui_pop();
+  ui_split_next();
+    ui_split_left(80);
+    ui_text("Reverb");
+    ui_split_next();
+    snapshot_8_reverb = control_switch(snapshot_8_reverb);
+    ui_pop();
+  ui_split_next();
+    sprintf(#text, snapshot_8_amp == 1 ? "Piezo" : snapshot_8_amp == 2 ? "Clean" : snapshot_8_amp == 3 ? "Rhythm" : snapshot_8_amp == 4 ? "Lead", snapshot_8_amp);
+    next_value = min(4, snapshot_8_amp + 1);
+    prev_value = max(1, snapshot_8_amp - 1);
+    snapshot_8_amp = control_selector(snapshot_8_amp, #text, next_value, prev_value);
+ui_pop();
+// snapshot 8 end
+        ui_pop();
+// snapshots 5-8 end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+@block
+
+function load_snapshot_1()(
+  midisend(0, note+channel, 1, snapshot_1_compressor == 0 ? 0 : 127);
+  midisend(0, note+channel, 2, snapshot_1_overdrive == 0 ? 0 : 127);
+  midisend(0, note+channel, 3, snapshot_1_phaser == 0 ? 0 : 127);
+  midisend(0, note+channel, 4, snapshot_1_chorus_pre == 0 ? 0 : 127);
+  midisend(0, note+channel, 5, snapshot_1_flanger == 0 ? 0 : 127);
+  midisend(0, note+channel, 6, snapshot_1_chorus_post == 0 ? 0 : 127);
+  midisend(0, note+channel, 7, snapshot_1_delay == 0 ? 0 : 127);
+  midisend(0, note+channel, 8, snapshot_1_reverb == 0 ? 0 : 127);
+  
+  snapshot_1_amp == 1 ? (
+    midisend(0, note+channel, 9, 127);
+  ) : snapshot_1_amp == 2 ? (
+    midisend(0, note+channel, 10, 127);  
+  ) : snapshot_1_amp == 3 ? (
+    midisend(0, note+channel, 11, 127);  
+  ) : snapshot_1_amp == 4 ? (
+    midisend(0, note+channel, 12, 127);  
+  )
+);
+
+function load_snapshot_2()(
+  midisend(0, note+channel, 1, snapshot_2_compressor == 0 ? 0 : 127);
+  midisend(0, note+channel, 2, snapshot_2_overdrive == 0 ? 0 : 127);
+  midisend(0, note+channel, 3, snapshot_2_phaser == 0 ? 0 : 127);
+  midisend(0, note+channel, 4, snapshot_2_chorus_pre == 0 ? 0 : 127);
+  midisend(0, note+channel, 5, snapshot_2_flanger == 0 ? 0 : 127);
+  midisend(0, note+channel, 6, snapshot_2_chorus_post == 0 ? 0 : 127);
+  midisend(0, note+channel, 7, snapshot_2_delay == 0 ? 0 : 127);
+  midisend(0, note+channel, 8, snapshot_2_reverb == 0 ? 0 : 127);
+  
+  snapshot_2_amp == 1 ? (
+    midisend(0, note+channel, 9, 127);
+  ) : snapshot_2_amp == 2 ? (
+    midisend(0, note+channel, 10, 127);  
+  ) : snapshot_2_amp == 3 ? (
+    midisend(0, note+channel, 11, 127);  
+  ) : snapshot_2_amp == 4 ? (
+    midisend(0, note+channel, 12, 127);  
+  )
+);
+
+function load_snapshot_3()(
+  midisend(0, note+channel, 1, snapshot_3_compressor == 0 ? 0 : 127);
+  midisend(0, note+channel, 2, snapshot_3_overdrive == 0 ? 0 : 127);
+  midisend(0, note+channel, 3, snapshot_3_phaser == 0 ? 0 : 127);
+  midisend(0, note+channel, 4, snapshot_3_chorus_pre == 0 ? 0 : 127);
+  midisend(0, note+channel, 5, snapshot_3_flanger == 0 ? 0 : 127);
+  midisend(0, note+channel, 6, snapshot_3_chorus_post == 0 ? 0 : 127);
+  midisend(0, note+channel, 7, snapshot_3_delay == 0 ? 0 : 127);
+  midisend(0, note+channel, 8, snapshot_3_reverb == 0 ? 0 : 127);
+  
+  snapshot_3_amp == 1 ? (
+    midisend(0, note+channel, 9, 127);
+  ) : snapshot_3_amp == 2 ? (
+    midisend(0, note+channel, 10, 127);  
+  ) : snapshot_3_amp == 3 ? (
+    midisend(0, note+channel, 11, 127);  
+  ) : snapshot_3_amp == 4 ? (
+    midisend(0, note+channel, 12, 127);  
+  )
+);
+
+function load_snapshot_4()(
+  midisend(0, note+channel, 1, snapshot_4_compressor == 0 ? 0 : 127);
+  midisend(0, note+channel, 2, snapshot_4_overdrive == 0 ? 0 : 127);
+  midisend(0, note+channel, 3, snapshot_4_phaser == 0 ? 0 : 127);
+  midisend(0, note+channel, 4, snapshot_4_chorus_pre == 0 ? 0 : 127);
+  midisend(0, note+channel, 5, snapshot_4_flanger == 0 ? 0 : 127);
+  midisend(0, note+channel, 6, snapshot_4_chorus_post == 0 ? 0 : 127);
+  midisend(0, note+channel, 7, snapshot_4_delay == 0 ? 0 : 127);
+  midisend(0, note+channel, 8, snapshot_4_reverb == 0 ? 0 : 127);
+  
+  snapshot_4_amp == 1 ? (
+    midisend(0, note+channel, 9, 127);
+  ) : snapshot_4_amp == 2 ? (
+    midisend(0, note+channel, 10, 127);  
+  ) : snapshot_4_amp == 3 ? (
+    midisend(0, note+channel, 11, 127);  
+  ) : snapshot_4_amp == 4 ? (
+    midisend(0, note+channel, 12, 127);  
+  )
+);
+
+function load_snapshot_5()(
+  midisend(0, note+channel, 1, snapshot_5_compressor == 0 ? 0 : 127);
+  midisend(0, note+channel, 2, snapshot_5_overdrive == 0 ? 0 : 127);
+  midisend(0, note+channel, 3, snapshot_5_phaser == 0 ? 0 : 127);
+  midisend(0, note+channel, 4, snapshot_5_chorus_pre == 0 ? 0 : 127);
+  midisend(0, note+channel, 5, snapshot_5_flanger == 0 ? 0 : 127);
+  midisend(0, note+channel, 6, snapshot_5_chorus_post == 0 ? 0 : 127);
+  midisend(0, note+channel, 7, snapshot_5_delay == 0 ? 0 : 127);
+  midisend(0, note+channel, 8, snapshot_5_reverb == 0 ? 0 : 127);
+  
+  snapshot_5_amp == 1 ? (
+    midisend(0, note+channel, 9, 127);
+  ) : snapshot_5_amp == 2 ? (
+    midisend(0, note+channel, 10, 127);  
+  ) : snapshot_5_amp == 3 ? (
+    midisend(0, note+channel, 11, 127);  
+  ) : snapshot_5_amp == 4 ? (
+    midisend(0, note+channel, 12, 127);  
+  )
+);
+
+function load_snapshot_6()(
+  midisend(0, note+channel, 1, snapshot_6_compressor == 0 ? 0 : 127);
+  midisend(0, note+channel, 2, snapshot_6_overdrive == 0 ? 0 : 127);
+  midisend(0, note+channel, 3, snapshot_6_phaser == 0 ? 0 : 127);
+  midisend(0, note+channel, 4, snapshot_6_chorus_pre == 0 ? 0 : 127);
+  midisend(0, note+channel, 5, snapshot_6_flanger == 0 ? 0 : 127);
+  midisend(0, note+channel, 6, snapshot_6_chorus_post == 0 ? 0 : 127);
+  midisend(0, note+channel, 7, snapshot_6_delay == 0 ? 0 : 127);
+  midisend(0, note+channel, 8, snapshot_6_reverb == 0 ? 0 : 127);
+  
+  snapshot_6_amp == 1 ? (
+    midisend(0, note+channel, 9, 127);
+  ) : snapshot_6_amp == 2 ? (
+    midisend(0, note+channel, 10, 127);  
+  ) : snapshot_6_amp == 3 ? (
+    midisend(0, note+channel, 11, 127);  
+  ) : snapshot_6_amp == 4 ? (
+    midisend(0, note+channel, 12, 127);  
+  )
+);
+
+function load_snapshot_7()(
+  midisend(0, note+channel, 1, snapshot_7_compressor == 0 ? 0 : 127);
+  midisend(0, note+channel, 2, snapshot_7_overdrive == 0 ? 0 : 127);
+  midisend(0, note+channel, 3, snapshot_7_phaser == 0 ? 0 : 127);
+  midisend(0, note+channel, 4, snapshot_7_chorus_pre == 0 ? 0 : 127);
+  midisend(0, note+channel, 5, snapshot_7_flanger == 0 ? 0 : 127);
+  midisend(0, note+channel, 6, snapshot_7_chorus_post == 0 ? 0 : 127);
+  midisend(0, note+channel, 7, snapshot_7_delay == 0 ? 0 : 127);
+  midisend(0, note+channel, 8, snapshot_7_reverb == 0 ? 0 : 127);
+  
+  snapshot_7_amp == 1 ? (
+    midisend(0, note+channel, 9, 127);
+  ) : snapshot_7_amp == 2 ? (
+    midisend(0, note+channel, 10, 127);  
+  ) : snapshot_7_amp == 3 ? (
+    midisend(0, note+channel, 11, 127);  
+  ) : snapshot_7_amp == 4 ? (
+    midisend(0, note+channel, 12, 127);  
+  )
+);
+
+function load_snapshot_8()(
+  midisend(0, note+channel, 1, snapshot_8_compressor == 0 ? 0 : 127);
+  midisend(0, note+channel, 2, snapshot_8_overdrive == 0 ? 0 : 127);
+  midisend(0, note+channel, 3, snapshot_8_phaser == 0 ? 0 : 127);
+  midisend(0, note+channel, 4, snapshot_8_chorus_pre == 0 ? 0 : 127);
+  midisend(0, note+channel, 5, snapshot_8_flanger == 0 ? 0 : 127);
+  midisend(0, note+channel, 6, snapshot_8_chorus_post == 0 ? 0 : 127);
+  midisend(0, note+channel, 7, snapshot_8_delay == 0 ? 0 : 127);
+  midisend(0, note+channel, 8, snapshot_8_reverb == 0 ? 0 : 127);
+  
+  snapshot_8_amp == 1 ? (
+    midisend(0, note+channel, 9, 127);
+  ) : snapshot_8_amp == 2 ? (
+    midisend(0, note+channel, 10, 127);  
+  ) : snapshot_8_amp == 3 ? (
+    midisend(0, note+channel, 11, 127);  
+  ) : snapshot_8_amp == 4 ? (
+    midisend(0, note+channel, 12, 127);  
+  )
+);
+
+while (midirecv(offset, msg1, msg2, msg3))
+(
+  channel = msg1 & $x0F;
+  type = msg1 & $xF0;
+
+  (type == cc && channel == inChannel && msg2 == 69) ? (
+    msg3 == 0 ? (
+      load_snapshot_1();
+    ) : msg3 == 1 ? (
+      load_snapshot_2();
+    ) : msg3 == 2 ? (
+      load_snapshot_3();
+    ) : msg3 == 3 ? (
+      load_snapshot_4();
+    ) : msg3 == 4 ? (
+      load_snapshot_5();
+    ) : msg3 == 5 ? (
+      load_snapshot_6();
+    ) : msg3 == 6 ? (
+      load_snapshot_7();
+    ) : msg3 == 7 ? (
+      load_snapshot_8();
+    )
+  ) : (
+    midisend(offset, msg1, msg2, msg3);
+  )
+);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+@serialize
+preset_version = 1.0;
+file_var(0, preset_version);
+
+file_var(0, snapshot_1_compressor);
+file_var(0, snapshot_1_overdrive);
+file_var(0, snapshot_1_phaser);
+file_var(0, snapshot_1_chorus_pre);
+file_var(0, snapshot_1_flanger);
+file_var(0, snapshot_1_chorus_post);
+file_var(0, snapshot_1_delay);
+file_var(0, snapshot_1_reverb);
+file_var(0, snapshot_1_amp);
+
+file_var(0, snapshot_2_compressor);
+file_var(0, snapshot_2_overdrive);
+file_var(0, snapshot_2_phaser);
+file_var(0, snapshot_2_chorus_pre);
+file_var(0, snapshot_2_flanger);
+file_var(0, snapshot_2_chorus_post);
+file_var(0, snapshot_2_delay);
+file_var(0, snapshot_2_reverb);
+file_var(0, snapshot_2_amp);
+
+file_var(0, snapshot_3_compressor);
+file_var(0, snapshot_3_overdrive);
+file_var(0, snapshot_3_phaser);
+file_var(0, snapshot_3_chorus_pre);
+file_var(0, snapshot_3_flanger);
+file_var(0, snapshot_3_chorus_post);
+file_var(0, snapshot_3_delay);
+file_var(0, snapshot_3_reverb);
+file_var(0, snapshot_3_amp);
+
+file_var(0, snapshot_4_compressor);
+file_var(0, snapshot_4_overdrive);
+file_var(0, snapshot_4_phaser);
+file_var(0, snapshot_4_chorus_pre);
+file_var(0, snapshot_4_flanger);
+file_var(0, snapshot_4_chorus_post);
+file_var(0, snapshot_4_delay);
+file_var(0, snapshot_4_reverb);
+file_var(0, snapshot_4_amp);
+
+file_var(0, snapshot_5_compressor);
+file_var(0, snapshot_5_overdrive);
+file_var(0, snapshot_5_phaser);
+file_var(0, snapshot_5_chorus_pre);
+file_var(0, snapshot_5_flanger);
+file_var(0, snapshot_5_chorus_post);
+file_var(0, snapshot_5_delay);
+file_var(0, snapshot_5_reverb);
+file_var(0, snapshot_5_amp);
+
+file_var(0, snapshot_6_compressor);
+file_var(0, snapshot_6_overdrive);
+file_var(0, snapshot_6_phaser);
+file_var(0, snapshot_6_chorus_pre);
+file_var(0, snapshot_6_flanger);
+file_var(0, snapshot_6_chorus_post);
+file_var(0, snapshot_6_delay);
+file_var(0, snapshot_6_reverb);
+file_var(0, snapshot_6_amp);
+
+file_var(0, snapshot_7_compressor);
+file_var(0, snapshot_7_overdrive);
+file_var(0, snapshot_7_phaser);
+file_var(0, snapshot_7_chorus_pre);
+file_var(0, snapshot_7_flanger);
+file_var(0, snapshot_7_chorus_post);
+file_var(0, snapshot_7_delay);
+file_var(0, snapshot_7_reverb);
+file_var(0, snapshot_7_amp);
+
+file_var(0, snapshot_8_compressor);
+file_var(0, snapshot_8_overdrive);
+file_var(0, snapshot_8_phaser);
+file_var(0, snapshot_8_chorus_pre);
+file_var(0, snapshot_8_flanger);
+file_var(0, snapshot_8_chorus_post);
+file_var(0, snapshot_8_delay);
+file_var(0, snapshot_8_reverb);
+file_var(0, snapshot_8_amp);
