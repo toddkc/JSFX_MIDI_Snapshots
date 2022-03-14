@@ -1,7 +1,9 @@
 # JSFX_MIDI_Snapshots
 Configurable MIDI message output from a single MIDI note input.
 
-Note that this plugin relies on https://github.com/geraintluff/jsfx-ui-lib
+https://user-images.githubusercontent.com/30729865/158197281-bbc1338d-30bb-4628-9e74-23411a286bcb.png
+
+Note that this plugin relies on https://github.com/geraintluff/jsfx-ui-lib <br>
 This must be installed with the plugin (I am researching if I can include it with mine for ease of use).
 
 After attempting to use Archetype: Petrucci with my band and experimenting with various MIDI setups using my FCB1010 I was doing some research and found out about Snapshots from the Line 6 Helix products.  They have three distinct ways of controlling with footswitches.  Preset Mode will switch to whatever preset is assigned to that footswitch.  Stompbox Mode will toggle an effect on/off when the footswitch is pressed.  Snapshots will toggle any number of settings within the preset.
