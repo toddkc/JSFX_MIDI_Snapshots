@@ -1,7 +1,7 @@
 # JSFX_MIDI_Snapshots
 Configurable MIDI message output from a single MIDI note input.
 
-https://user-images.githubusercontent.com/30729865/158197281-bbc1338d-30bb-4628-9e74-23411a286bcb.png
+<img src="https://user-images.githubusercontent.com/30729865/158197281-bbc1338d-30bb-4628-9e74-23411a286bcb.png" >
 
 Note that this plugin relies on https://github.com/geraintluff/jsfx-ui-lib <br>
 This must be installed with the plugin (I am researching if I can include it with mine for ease of use).
